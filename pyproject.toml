@@ -9,6 +9,7 @@ dependencies = [
     "numpy",
     "pillow",
     "ultralytics",
+    "customtkinter",
 ]
 
 [tool.uv]

@@ -5,12 +5,18 @@ import numpy as np
 from PIL import Image, ImageTk
 import os
 from ultralytics import YOLO
+import customtkinter as ctk
+
+# Set Appearance and Theme to look premium
+ctk.set_appearance_mode("Dark")
+ctk.set_default_color_theme("blue")
 
 class ParkingApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Smart Parking System")
-        self.root.geometry("1000x700")
+        self.root.title("Smart Parking Vision | Enterprise Dashboard")
+        self.root.geometry("1280x800")
+        self.root.configure(fg_color="#0F111A") # Deep sleek background
         
         # YOLO model paths
         self.model_onnx_path = 'best.onnx'
@@ -23,14 +29,14 @@ class ParkingApp:
             self.onnx_img_w, self.onnx_img_h = 640, 640
         else:
             self.model_onnx = None
-            messagebox.showwarning("Warning", f"ONNX Model '{self.model_onnx_path}' not found! Ensemble will skip it.")
+            print(f"Warning: ONNX Model '{self.model_onnx_path}' not found! Ensemble will skip it.")
 
         # Load standard YOLOv8 model
         try:
             self.model_yolov8 = YOLO(self.model_yolov8_path)
         except Exception as e:
             self.model_yolov8 = None
-            messagebox.showwarning("Warning", f"Failed to load YOLOv8 model: {e}")
+            print(f"Warning: Failed to load YOLOv8 model: {e}")
             
         # Load standard YOLO11n model
         self.model_yolo11_path = 'yolo11n.pt'
@@ -38,7 +44,7 @@ class ParkingApp:
             self.model_yolo11 = YOLO(self.model_yolo11_path)
         except Exception as e:
             self.model_yolo11 = None
-            messagebox.showwarning("Warning", f"Failed to load YOLO11n model: {e}")
+            print(f"Warning: Failed to load YOLO11n model: {e}")
             
         # Load custom YOLO model
         if os.path.exists(self.model_custom_path):
@@ -46,10 +52,10 @@ class ParkingApp:
                 self.model_custom = YOLO(self.model_custom_path)
             except Exception as e:
                 self.model_custom = None
-                messagebox.showwarning("Warning", f"Failed to load custom YOLO model: {e}")
+                print(f"Warning: Failed to load custom YOLO model: {e}")
         else:
             self.model_custom = None
-            messagebox.showwarning("Warning", f"Custom Model '{self.model_custom_path}' not found! Ensemble will skip it.")
+            print(f"Warning: Custom Model '{self.model_custom_path}' not found! Ensemble will skip it.")
         
         # App state
         self.cap = None
@@ -57,80 +63,137 @@ class ParkingApp:
         self.after_id = None
         self.max_auto_spots = 0
         
-        
         self.setup_ui()
         
     def setup_ui(self):
-        # Configure grid
-        self.root.rowconfigure(0, weight=1)
-        self.root.columnconfigure(1, weight=1)
+        # Main Layout Configuration
+        self.root.grid_columnconfigure(1, weight=1)
+        self.root.grid_rowconfigure(0, weight=1)
         
-        # --- Sidebar ---
-        self.sidebar = tk.Frame(self.root, width=250, bg="#2C3E50", padx=15, pady=20)
-        self.sidebar.grid(row=0, column=0, sticky="nswe")
+        # --- Sidebar (Left Panel) ---
+        self.sidebar = ctk.CTkFrame(self.root, width=320, corner_radius=0, fg_color="#151821", border_width=0)
+        self.sidebar.grid(row=0, column=0, sticky="nsew")
+        self.sidebar.grid_rowconfigure(4, weight=1) # Push stats to bottom
         
-        # Title
-        title_lbl = tk.Label(self.sidebar, text="PARKING SYSTEM", bg="#2C3E50", fg="white", font=("Arial", 16, "bold"))
-        title_lbl.pack(pady=(0, 20))
+        # 1. Branding Header
+        self.header_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        self.header_frame.grid(row=0, column=0, padx=25, pady=(30, 20), sticky="ew")
         
-        # Controls
-        controls_frame = tk.Frame(self.sidebar, bg="#2C3E50")
-        controls_frame.pack(fill="x", pady=10)
+        self.logo_label = ctk.CTkLabel(self.header_frame, text="SmartPark", font=ctk.CTkFont(family="Helvetica", size=26, weight="bold"), text_color="#FFFFFF")
+        self.logo_label.pack(anchor="w")
         
-        tk.Label(controls_frame, text="Total Parking Spots:", bg="#2C3E50", fg="white", font=("Arial", 11)).pack(anchor="w")
-        self.total_spots_var = tk.StringVar(value="15")
-        self.total_spots_entry = tk.Entry(controls_frame, textvariable=self.total_spots_var, font=("Arial", 12), width=10)
-        self.total_spots_entry.pack(anchor="w", pady=(5, 5))
-        
-        tk.Label(controls_frame, text="Total Spots Mode:", bg="#2C3E50", fg="white", font=("Arial", 11)).pack(anchor="w", pady=(5, 0))
-        self.mode_var = tk.StringVar(value="Manual")
-        self.mode_menu = tk.OptionMenu(controls_frame, self.mode_var, "Manual", "Geometric Math", "AI Counting")
-        self.mode_menu.config(bg="#34495E", fg="white", highlightthickness=0, width=15)
-        self.mode_menu.pack(anchor="w", pady=(2, 10))
-        
-        tk.Label(controls_frame, text="Confidence Threshold:", bg="#2C3E50", fg="white", font=("Arial", 11)).pack(anchor="w")
-        self.conf_var = tk.DoubleVar(value=0.25)
-        self.conf_slider = tk.Scale(controls_frame, from_=0.01, to=1.0, resolution=0.01, orient="horizontal", variable=self.conf_var, bg="#2C3E50", fg="white", highlightthickness=0)
-        self.conf_slider.pack(fill="x", pady=(0, 10))
+        self.subtitle_label = ctk.CTkLabel(self.header_frame, text="AI VISION SYSTEM", font=ctk.CTkFont(family="Helvetica", size=10, weight="bold"), text_color="#3B82F6")
+        self.subtitle_label.pack(anchor="w")
 
-        tk.Label(controls_frame, text="Inference Size (imgsz):", bg="#2C3E50", fg="white", font=("Arial", 11)).pack(anchor="w")
-        self.imgsz_var = tk.StringVar(value="1024")
-        self.imgsz_menu = tk.OptionMenu(controls_frame, self.imgsz_var, "640", "1024", "1280", "1920")
-        self.imgsz_menu.config(bg="#34495E", fg="white", highlightthickness=0)
-        self.imgsz_menu.pack(fill="x", pady=(0, 15))
+        # Separator
+        separator1 = ctk.CTkFrame(self.sidebar, height=1, fg_color="#2A2D3E")
+        separator1.grid(row=1, column=0, sticky="ew", padx=25, pady=(0, 20))
+
+        # 2. Media Controls Group (Cards)
+        self.media_group = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        self.media_group.grid(row=2, column=0, padx=25, pady=(0, 20), sticky="ew")
         
-        # Buttons
-        self.btn_load_img = tk.Button(self.sidebar, text="Load Image", command=self.load_image, bg="#3498DB", fg="white", font=("Arial", 11, "bold"), pady=5)
-        self.btn_load_img.pack(fill="x", pady=5)
+        ctk.CTkLabel(self.media_group, text="DATA SOURCE", font=ctk.CTkFont(size=11, weight="bold"), text_color="#64748B").pack(anchor="w", pady=(0, 10))
         
-        self.btn_load_vid = tk.Button(self.sidebar, text="Load Video", command=self.load_video, bg="#3498DB", fg="white", font=("Arial", 11, "bold"), pady=5)
-        self.btn_load_vid.pack(fill="x", pady=5)
+        self.btn_load_vid = ctk.CTkButton(self.media_group, text="▶ Live Video Stream", font=ctk.CTkFont(weight="bold"), height=40, command=self.load_video, fg_color="#2563EB", hover_color="#1D4ED8")
+        self.btn_load_vid.pack(fill="x", pady=(0, 8))
+
+        self.btn_load_img = ctk.CTkButton(self.media_group, text="📷 Analyze Static Image", font=ctk.CTkFont(weight="bold"), height=40, command=self.load_image, fg_color="#334155", hover_color="#475569")
+        self.btn_load_img.pack(fill="x", pady=(0, 8))
+
+        self.btn_stop_vid = ctk.CTkButton(self.media_group, text="⏹ Stop Processing", font=ctk.CTkFont(weight="bold"), height=40, command=self.stop_video, state="disabled", fg_color="transparent", border_width=1, border_color="#334155", text_color="#94A3B8")
+        self.btn_stop_vid.pack(fill="x")
         
-        self.btn_stop_vid = tk.Button(self.sidebar, text="Stop Video", command=self.stop_video, bg="#E74C3C", fg="white", font=("Arial", 11, "bold"), pady=5, state=tk.DISABLED)
-        self.btn_stop_vid.pack(fill="x", pady=5)
+        # Separator
+        separator2 = ctk.CTkFrame(self.sidebar, height=1, fg_color="#2A2D3E")
+        separator2.grid(row=3, column=0, sticky="ew", padx=25, pady=20)
+
+        # 3. Configuration Group
+        self.config_group = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        self.config_group.grid(row=4, column=0, padx=25, sticky="nsew")
         
-        # Stats Panel
-        stats_frame = tk.Frame(self.sidebar, bg="#34495E", padx=10, pady=10)
-        stats_frame.pack(fill="x", pady=30)
+        ctk.CTkLabel(self.config_group, text="CONFIGURATION", font=ctk.CTkFont(size=11, weight="bold"), text_color="#64748B").pack(anchor="w", pady=(0, 15))
         
-        tk.Label(stats_frame, text="Real-Time Stats", bg="#34495E", fg="#ECF0F1", font=("Arial", 12, "bold")).pack(pady=(0, 10))
+        # Conf Slider
+        self.conf_frame = ctk.CTkFrame(self.config_group, fg_color="transparent")
+        self.conf_frame.pack(fill="x", pady=(0, 15))
+        self.conf_label = ctk.CTkLabel(self.conf_frame, text="Confidence Threshold", font=ctk.CTkFont(size=12))
+        self.conf_label.pack(anchor="w")
+        self.conf_var = tk.DoubleVar(value=0.20)
+        self.conf_slider = ctk.CTkSlider(self.conf_frame, from_=0.01, to=1.0, variable=self.conf_var, button_color="#3B82F6", progress_color="#3B82F6")
+        self.conf_slider.pack(fill="x", pady=(5, 0))
+
+        # Mode Menu
+        self.mode_label = ctk.CTkLabel(self.config_group, text="Detection Mode", font=ctk.CTkFont(size=12))
+        self.mode_label.pack(anchor="w")
+        self.mode_var = ctk.StringVar(value="AI Counting")
+        self.mode_menu = ctk.CTkOptionMenu(self.config_group, variable=self.mode_var, values=["Manual", "Geometric Math", "AI Counting"], fg_color="#1E293B", button_color="#334155")
+        self.mode_menu.pack(fill="x", pady=(5, 15))
         
-        self.lbl_total = tk.Label(stats_frame, text="Total Spots: 15", bg="#34495E", fg="#3498DB", font=("Arial", 11, "bold"))
-        self.lbl_total.pack(anchor="w", pady=2)
+        # Spot Entry
+        self.spots_label = ctk.CTkLabel(self.config_group, text="Manual Spot Capacity", font=ctk.CTkFont(size=12))
+        self.spots_label.pack(anchor="w")
+        self.total_spots_var = tk.StringVar(value="15")
+        self.total_spots_entry = ctk.CTkEntry(self.config_group, textvariable=self.total_spots_var, fg_color="#1E293B", border_color="#334155")
+        self.total_spots_entry.pack(fill="x", pady=(5, 15))
+
+        # Imgsz Menu
+        self.imgsz_label = ctk.CTkLabel(self.config_group, text="Inference Resolution", font=ctk.CTkFont(size=12))
+        self.imgsz_label.pack(anchor="w")
+        self.imgsz_var = ctk.StringVar(value="1920")
+        self.imgsz_menu = ctk.CTkOptionMenu(self.config_group, variable=self.imgsz_var, values=["640", "1024", "1280", "1920", "2560", "3200"], fg_color="#1E293B", button_color="#334155")
+        self.imgsz_menu.pack(fill="x", pady=(5, 0))
+
+        # 4. Live Analytics Dashboard (Bottom of sidebar)
+        self.analytics_group = ctk.CTkFrame(self.sidebar, fg_color="#1E293B", corner_radius=12)
+        self.analytics_group.grid(row=5, column=0, padx=20, pady=25, sticky="ew")
         
-        self.lbl_occupied = tk.Label(stats_frame, text="Occupied: 0", bg="#34495E", fg="#E74C3C", font=("Arial", 11, "bold"))
-        self.lbl_occupied.pack(anchor="w", pady=2)
-        
-        self.lbl_vacant = tk.Label(stats_frame, text="Vacant: 15", bg="#34495E", fg="#2ECC71", font=("Arial", 11, "bold"))
-        self.lbl_vacant.pack(anchor="w", pady=2)
-        
-        # --- Main Display ---
-        self.main_display = tk.Frame(self.root, bg="#ECF0F1")
-        self.main_display.grid(row=0, column=1, sticky="nswe")
-        
-        self.canvas = tk.Canvas(self.main_display, bg="#BDC3C7", highlightthickness=0)
-        self.canvas.pack(fill="both", expand=True, padx=10, pady=10)
+        # Occupied Card (Red)
+        self.occ_card = ctk.CTkFrame(self.analytics_group, fg_color="transparent")
+        self.occ_card.pack(side="left", expand=True, fill="both", pady=15, padx=10)
+        ctk.CTkLabel(self.occ_card, text="OCCUPIED", font=ctk.CTkFont(size=10, weight="bold"), text_color="#94A3B8").pack()
+        self.lbl_occupied = ctk.CTkLabel(self.occ_card, text="0", font=ctk.CTkFont(size=32, weight="bold"), text_color="#EF4444")
+        self.lbl_occupied.pack()
+
+        # Divider line
+        ctk.CTkFrame(self.analytics_group, width=1, fg_color="#334155").pack(side="left", fill="y", pady=15)
+
+        # Vacant Card (Green)
+        self.vac_card = ctk.CTkFrame(self.analytics_group, fg_color="transparent")
+        self.vac_card.pack(side="left", expand=True, fill="both", pady=15, padx=10)
+        ctk.CTkLabel(self.vac_card, text="VACANT", font=ctk.CTkFont(size=10, weight="bold"), text_color="#94A3B8").pack()
+        self.lbl_vacant = ctk.CTkLabel(self.vac_card, text="15", font=ctk.CTkFont(size=32, weight="bold"), text_color="#10B981")
+        self.lbl_vacant.pack()
+
+        # Total Card (Blue - Full width below)
+        self.tot_card = ctk.CTkFrame(self.analytics_group, fg_color="transparent")
+        self.tot_card.pack(side="bottom", fill="x", pady=(0, 15))
+        self.lbl_total = ctk.CTkLabel(self.tot_card, text="Total Capacity: 15", font=ctk.CTkFont(size=12, weight="bold"), text_color="#3B82F6")
+        self.lbl_total.pack()
+
+        # --- Main Display Area ---
+        self.display_container = ctk.CTkFrame(self.root, fg_color="#0F111A", corner_radius=0)
+        self.display_container.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
+        self.display_container.grid_rowconfigure(0, weight=1)
+        self.display_container.grid_columnconfigure(0, weight=1)
+
+        # Inner rounded frame for the canvas
+        self.canvas_frame = ctk.CTkFrame(self.display_container, fg_color="#18181B", corner_radius=15, border_width=1, border_color="#2A2D3E")
+        self.canvas_frame.grid(row=0, column=0, sticky="nsew")
+
+        # Tkinter Canvas wrapped beautifully
+        self.canvas = tk.Canvas(self.canvas_frame, bg="#18181B", highlightthickness=0)
+        self.canvas.pack(fill="both", expand=True, padx=4, pady=4)
         self.canvas.bind("<Configure>", self.on_canvas_resize)
+        
+        # Placeholder text
+        self.canvas.create_text(
+            400, 300, 
+            text="AWAITING VIDEO FEED...", 
+            fill="#334155", 
+            font=("Helvetica", 20, "bold"),
+            tags="placeholder"
+        )
         
         # Store current photo to prevent garbage collection and current raw frame to redraw on resize
         self.current_photo = None
@@ -139,6 +202,17 @@ class ParkingApp:
     def on_canvas_resize(self, event):
         if self.current_frame is not None:
             self.display_image(self.current_frame)
+        else:
+            self.canvas.delete("all")
+            x_center = self.canvas.winfo_width() // 2
+            y_center = self.canvas.winfo_height() // 2
+            self.canvas.create_text(
+                x_center, y_center, 
+                text="AWAITING VIDEO FEED...", 
+                fill="#334155", 
+                font=("Helvetica", 20, "bold"),
+                tags="placeholder"
+            )
 
     def load_image(self):
         self.stop_video()
@@ -158,9 +232,9 @@ class ParkingApp:
             self.cap = cv2.VideoCapture(file_path)
             if self.cap.isOpened():
                 self.is_video_playing = True
-                self.btn_load_img.config(state=tk.DISABLED)
-                self.btn_load_vid.config(state=tk.DISABLED)
-                self.btn_stop_vid.config(state=tk.NORMAL)
+                self.btn_load_img.configure(state="disabled", fg_color="transparent", text_color="gray")
+                self.btn_load_vid.configure(state="disabled", fg_color="transparent", text_color="gray")
+                self.btn_stop_vid.configure(state="normal", fg_color="#EF4444", text_color="white", border_color="#EF4444")
                 self.video_loop()
             else:
                 messagebox.showerror("Error", "Could not open video file.")
@@ -174,9 +248,9 @@ class ParkingApp:
             self.cap.release()
             self.cap = None
             
-        self.btn_load_img.config(state=tk.NORMAL)
-        self.btn_load_vid.config(state=tk.NORMAL)
-        self.btn_stop_vid.config(state=tk.DISABLED)
+        self.btn_load_img.configure(state="normal", fg_color="#334155", text_color="white")
+        self.btn_load_vid.configure(state="normal", fg_color="#2563EB", text_color="white")
+        self.btn_stop_vid.configure(state="disabled", fg_color="transparent", text_color="#94A3B8", border_color="#334155")
 
     def video_loop(self):
         if self.is_video_playing and self.cap is not None:
@@ -245,7 +319,7 @@ class ParkingApp:
                     if confidence >= conf_thresh:
                         class_score = detect[5:]
                         class_id = np.argmax(class_score)
-                        if class_id == 0 and float(class_score[class_id]) > 0.5:
+                        if class_id == 0 and float(class_score[class_id]) > conf_thresh:
                             x, y, det_w, det_h = detect[0], detect[1], detect[2], detect[3]
                             left = int((x - det_w/2) * x_scale) + sx
                             top = int((y - det_h/2) * y_scale) + sy
@@ -287,7 +361,7 @@ class ParkingApp:
         cars_count = 0
         final_cars = []
         if len(all_car_boxes) > 0:
-            indices = cv2.dnn.NMSBoxes(all_car_boxes, all_car_scores, conf_thresh, 0.30)
+            indices = cv2.dnn.NMSBoxes(all_car_boxes, all_car_scores, conf_thresh, 0.50)
             
             for i in indices:
                 idx = i[0] if isinstance(i, (list, np.ndarray)) else i
@@ -298,13 +372,17 @@ class ParkingApp:
                 
                 cars_count += 1
                 
-                # Draw Red Car Box
-                cv2.rectangle(img, (left, top), (left + w, top + h), (0, 0, 255), 2)
+                # Premium Bounding Box UI - Subtle Red Overlay with sharp borders
+                overlay = img.copy()
+                cv2.rectangle(overlay, (left, top), (left + w, top + h), (36, 36, 239), -1)  # BGR Red
+                cv2.addWeighted(overlay, 0.2, img, 0.8, 0, img)
+                cv2.rectangle(img, (left, top), (left + w, top + h), (36, 36, 239), 2)
+                
+                # Sleek Label
                 label = f"car {conf:.2f}"
-                text_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                dim_text, baseline = text_size[0], text_size[1]
-                cv2.rectangle(img, (left, top - 20), (left + dim_text[0], top + dim_text[1] + baseline - 20), (0, 0, 0), cv2.FILLED)
-                cv2.putText(img, label, (left, top + dim_text[1] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+                text_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_DUPLEX, 0.45, 1)[0]
+                cv2.rectangle(img, (left, top - 22), (left + text_size[0] + 10, top), (36, 36, 239), -1)
+                cv2.putText(img, label, (left + 5, top - 6), cv2.FONT_HERSHEY_DUPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         # 2. Custom Model Inference (Empty and Occupied Spaces)
         custom_spaces_count = 0
@@ -321,13 +399,17 @@ class ParkingApp:
                 if "empty" in cls_name.lower():
                     vacant_spaces_count += 1
                 
-                # Draw Green Empty/Occupied Space Box
-                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                # Premium Bounding Box UI - Subtle Green Overlay with sharp borders
+                overlay = img.copy()
+                cv2.rectangle(overlay, (x1, y1), (x2, y2), (129, 185, 16), -1) # BGR Green
+                cv2.addWeighted(overlay, 0.2, img, 0.8, 0, img)
+                cv2.rectangle(img, (x1, y1), (x2, y2), (129, 185, 16), 2)
+                
+                # Sleek Label
                 label = f"{cls_name} {conf:.2f}"
-                text_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                dim_text, baseline = text_size[0], text_size[1]
-                cv2.rectangle(img, (x1, y1 - 20), (x1 + dim_text[0], y1 + dim_text[1] + baseline - 20), (0, 0, 0), cv2.FILLED)
-                cv2.putText(img, label, (x1, y1 + dim_text[1] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+                text_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_DUPLEX, 0.45, 1)[0]
+                cv2.rectangle(img, (x1, y1 - 22), (x1 + text_size[0] + 10, y1), (129, 185, 16), -1)
+                cv2.putText(img, label, (x1 + 5, y1 - 6), cv2.FONT_HERSHEY_DUPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         # 3. Auto-Detect Total Spots Logic
         mode = self.mode_var.get()
@@ -391,9 +473,9 @@ class ParkingApp:
         except ValueError:
             total = 0
             
-        self.lbl_total.config(text=f"Total Spots: {total}")
-        self.lbl_occupied.config(text=f"Occupied: {cars}")
-        self.lbl_vacant.config(text=f"Vacant: {empty}")
+        self.lbl_total.configure(text=f"Total Capacity: {total}")
+        self.lbl_occupied.configure(text=f"{cars}")
+        self.lbl_vacant.configure(text=f"{empty}")
 
     def display_image(self, frame):
         # Convert BGR to RGB
@@ -423,7 +505,7 @@ class ParkingApp:
             self.canvas.create_image(x_center, y_center, image=self.current_photo, anchor=tk.CENTER)
 
 def main():
-    root = tk.Tk()
+    root = ctk.CTk()
     app = ParkingApp(root)
     root.mainloop()
 

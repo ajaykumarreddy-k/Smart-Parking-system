@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking Space System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Georgia', 'Times New Roman', 'serif'],
+                    },
+                    colors: {
+                        'brand-orange': '#F45B38',
+                        'brand-purple': '#C4A8FF',
+                        'brand-green': '#D1E1D1',
+                        'brand-dark': '#000000',
+                    },
+                    letterSpacing: {
+                        tighter: '-0.05em',
+                        tight: '-0.025em',
+                        widest: '0.1em',
+                    },
+                    borderWidth: {
+                        '1': '1px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Abstract Hero Banner */
+        .hero-banner {
+            width: 100%;
+            height: 35vh;
+            min-height: 250px;
+            background-image: url('https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=2564&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            mix-blend-mode: multiply;
+            opacity: 0.8;
+            filter: contrast(1.2) saturate(1.4) hue-rotate(-10deg);
+        }
+
+        /* Brutalist Borders */
+        .border-black {
+            border-color: #000000 !important;
+        }
+
+        /* Chapter Button Hover */
+        .chapter-btn {
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .chapter-btn:hover {
+            background-color: #222222;
+        }
+        .chapter-btn:hover svg {
+            transform: translateX(4px);
+            transition: transform 0.2s ease;
+        }
+        .chapter-btn svg {
+            transition: transform 0.2s ease;
+        }
+        
+        /* List item hover */
+        .chapter-list li {
+            transition: opacity 0.2s ease;
+        }
+        .chapter-list li:hover {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="font-sans selection:bg-brand-orange selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 px-6 lg:px-8 py-5 flex justify-between items-center text-[15px] font-medium tracking-tight border-b-1 border-black">
+        <a href="#" class="hover:opacity-60 transition-opacity">SmartPark CV</a>
+        <div class="flex items-center space-x-6 lg:space-x-10">
+            <a href="#" class="hover:opacity-60 transition-opacity flex items-center">Features <span class="ml-1 text-lg leading-none font-light">+</span></a>
+            <a href="#" class="hover:opacity-60 transition-opacity hidden sm:block">Architecture</a>
+            <a href="#" class="hover:opacity-60 transition-opacity flex items-center">GitHub <span class="ml-1 text-lg leading-none font-light">+</span></a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-[73px]">
+        <!-- Top Abstract Banner -->
+        <div class="px-6 lg:px-8 max-w-[1920px] mx-auto w-full pt-6">
+            <div class="hero-banner border-1 border-black/10"></div>
+        </div>
+        
+        <div class="px-6 lg:px-8 max-w-[1920px] mx-auto mt-12 pb-16">
+            <div class="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16">
+                <!-- Left text -->
+                <div class="lg:w-[280px] shrink-0 text-[15px] font-medium leading-[1.4] pt-4">
+                    <p>Monitors and calculates parking lot occupancy in real-time using modern AI pipelines.</p>
+                    <div class="mt-8">
+                        <span class="inline-block border-1 border-black px-2 py-1 text-[10px] font-bold uppercase tracking-widest bg-white">COMPUTER VISION</span>
+                    </div>
+                </div>
+
+                <!-- Main Title -->
+                <div class="w-full">
+                    <h1 class="text-[14vw] sm:text-[11vw] lg:text-[10vw] leading-[0.85] font-medium tracking-tighter -ml-1">
+                        Smart Parking<br>Space System
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Bottom row of hero -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end mt-24 sm:mt-32 lg:mt-40">
+                <div class="text-[10px] font-bold uppercase tracking-widest leading-[1.6]">
+                    <p>BUILT WITH YOLO ENSEMBLE ARCHITECTURES<br>FOR INTELLIGENT PARKING MANAGEMENT</p>
+                </div>
+                <div class="flex md:justify-center text-[15px] font-medium">
+                    <span class="cursor-pointer hover:opacity-60 transition-opacity">Scroll to discover</span>
+                </div>
+                <div class="flex md:justify-end">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="20"></line><polyline points="18 14 12 20 6 14"></polyline></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Partners Section / Tech Stack -->
+    <section class="border-y-1 border-black py-6 sm:py-8 overflow-hidden bg-white">
+        <div class="px-6 lg:px-8 max-w-[1920px] mx-auto flex flex-col xl:flex-row items-start xl:items-center">
+            <span class="text-[10px] font-bold uppercase tracking-widest xl:mr-32 mb-6 xl:mb-0 whitespace-nowrap">TECH STACK</span>
+            <div class="flex flex-wrap items-center w-full gap-x-12 gap-y-8 opacity-80 grayscale">
+                <span class="font-serif font-bold text-2xl flex items-center tracking-tight">Python 3.10+</span>
+                <span class="font-sans font-semibold text-xl tracking-widest flex items-center">OpenCV-DNN</span>
+                <span class="font-sans font-bold text-3xl flex items-center tracking-tighter">YOLOv8</span>
+                <span class="font-sans font-semibold text-2xl flex items-center tracking-tight">YOLO11</span>
+                <span class="font-serif tracking-widest text-[15px] font-bold uppercase">Tkinter</span>
+                <span class="font-sans font-bold text-3xl flex items-center tracking-tighter">uv</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inflection Point Section -->
+    <section class="py-24 lg:py-32 px-6 lg:px-8 max-w-[1920px] mx-auto">
+        <p class="text-[10px] font-bold uppercase tracking-widest mb-10">THE PROBLEM & SOLUTION</p>
+        
+        <h2 class="text-4xl md:text-6xl lg:text-[6rem] leading-[1.05] font-medium tracking-tighter max-w-[80rem] mb-20 lg:mb-32">
+            A state-of-the-art Computer Vision (CV) application for intelligent parking lot monitoring.
+        </h2>
+
+        <div class="w-full aspect-[21/9] lg:aspect-[2.5/1] bg-[#e5e5e5] overflow-hidden">
+            <img src="/home/prince/.gemini/antigravity/brain/c277b448-9d31-4809-9f9a-27274c44d303/smart_parking_hero_1782252198186.png" alt="Parking lot aerial view" class="w-full h-full object-cover">
+        </div>
+    </section>
+
+    <!-- Context Text Block -->
+    <section class="pb-24 lg:pb-32 px-6 lg:px-8 max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div class="lg:col-start-6 lg:col-span-7">
+            <h3 class="text-3xl md:text-[2.5rem] lg:text-[3rem] font-medium tracking-tighter mb-10 leading-[1.1] max-w-4xl">
+                The application relies on a multi-model ensemble approach to guarantee accuracy across varying top-down drone and security camera perspectives.
+            </h3>
+            <div class="text-[17px] leading-[1.6] text-black font-medium space-y-6 max-w-2xl">
+                <p>The system pulls a frame from the selected source (RTSP stream, video, or image). The frame is kept at its native high resolution (user-configurable up to 1920p) and fed into the active models.</p>
+                <p>Bounding boxes from the ONNX model and the YOLO models are scaled and translated into a unified coordinate space. To prevent duplicate detections, Non-Maximum Suppression (NMS) filters out overlapping duplicates based on the user-defined Confidence Threshold.</p>
+                <p>Finally, a specialized parking_yolo.pt model scans the remaining regions to confidently identify and flag space-empty locations, allowing real-time stat aggregation on the interactive Tkinter dashboard.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Split Section -->
+    <section class="flex flex-col lg:flex-row min-h-[60vh] border-y-1 border-black">
+        <!-- Left Black Area -->
+        <div class="bg-black text-white p-8 sm:p-12 lg:p-16 lg:w-[35%] flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black">
+            <div class="text-[10rem] font-serif leading-[0.5] mt-10">“</div>
+            <div class="flex items-center space-x-5 mt-32 lg:mt-0">
+                <span class="font-medium text-lg text-gray-400">Core Approach</span>
+            </div>
+        </div>
+        <!-- Right Green Area -->
+        <div class="bg-[#D2DFCD] p-8 sm:p-12 lg:p-24 lg:w-[65%] flex items-center">
+            <p class="text-3xl sm:text-5xl lg:text-[4.5rem] font-medium tracking-tighter leading-[1.05] max-w-5xl">
+                By fusing multiple YOLO versions, we achieve high-precision bounding boxes for dynamic slot counting.
+            </p>
+        </div>
+    </section>
+
+    <!-- Chapter 01: Features -->
+    <section class="bg-brand-orange text-black border-b-1 border-black">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Left col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
+                <div>
+                    <h2 class="text-[12rem] lg:text-[14rem] leading-[0.8] tracking-tighter font-medium mb-4 -ml-2">01</h2>
+                    <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Features</h3>
+                </div>
+                <!-- Abstract block -->
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#ffa1b5] via-[#ffb982] to-[#d6bcff]"></div>
+                    <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover mix-blend-overlay opacity-50">
+                </div>
+            </div>
+            
+            <!-- Right col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-center">
+                <h4 class="text-4xl lg:text-[3.5rem] font-medium mb-8 tracking-tighter leading-[1.1] max-w-xl">Real-time capabilities</h4>
+                <p class="text-[19px] leading-[1.6] mb-16 font-medium text-black max-w-2xl">
+                    The Smart Parking System processes RTSP camera feeds, local videos, and images to deliver highly accurate, automated parking slot tracking. The Tkinter dashboard allows for adjusting confidence thresholds, inference sizes, and monitoring live stats instantaneously.
+                </p>
+
+                <p class="text-[10px] font-bold uppercase tracking-widest mb-6">KEY FEATURES INCLUDE</p>
+                <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Real-Time Occupancy Tracking</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Ensemble Vision Pipeline (v5, v8, v11)</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Geometric Math Mode layout inference</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">AI Counting Mode for minimum slots</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Flexible Inputs (RTSP, MP4, Static)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 02: Architecture -->
+    <section class="bg-brand-purple text-black border-b-1 border-black">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Left col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
+                <div>
+                    <h2 class="text-[12rem] lg:text-[14rem] leading-[0.8] tracking-tighter font-medium mb-4 -ml-2">02</h2>
+                    <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Models</h3>
+                </div>
+                <!-- Abstract block -->
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10">
+                     <img src="/home/prince/.gemini/antigravity/brain/c277b448-9d31-4809-9f9a-27274c44d303/smart_parking_dashboard_1782252215461.png" class="w-full h-full object-cover contrast-125 saturate-150">
+                </div>
+            </div>
+            
+            <!-- Right col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-center">
+                <h4 class="text-4xl lg:text-[3.5rem] font-medium mb-8 tracking-tighter leading-[1.1] max-w-xl">The Neural Network Layers</h4>
+                <p class="text-[19px] leading-[1.6] mb-16 font-medium text-black max-w-2xl">
+                    To ensure robust detection across different lighting conditions, camera angles, and object scales, we use a specialized combination of models working in harmony. This allows the system to not just find cars, but map out the parking lot structure.
+                </p>
+
+                <p class="text-[10px] font-bold uppercase tracking-widest mb-6">THE ENSEMBLE CONSISTS OF</p>
+                <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>best.onnx</strong>: Core Vehicle Detector for top-down angles</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>yolov8n.pt</strong>: Context Verification for varying shapes</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>yolo11n.pt</strong>: State-of-the-art robustness</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>parking_yolo.pt</strong>: Space Classifier for infrastructure mapping</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>NMS</strong>: Filtering out overlapping duplicates</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 03: Getting Started -->
+    <section class="bg-brand-green text-black border-b-1 border-black">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Left col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
+                <div>
+                    <h2 class="text-[12rem] lg:text-[14rem] leading-[0.8] tracking-tighter font-medium mb-4 -ml-2">03</h2>
+                    <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Setup</h3>
+                </div>
+                <!-- Abstract block -->
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10 bg-[#a1a1a1]">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover grayscale opacity-70">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#F45B38]/30 to-[#C4A8FF]/30 mix-blend-overlay"></div>
+                </div>
+            </div>
+            
+            <!-- Right col -->
+            <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-center">
+                <h4 class="text-4xl lg:text-[3.5rem] font-medium mb-8 tracking-tighter leading-[1.1] max-w-xl">Lightning-fast environment setup</h4>
+                <p class="text-[19px] leading-[1.6] mb-16 font-medium text-black max-w-2xl">
+                    You can set up the project using either `uv` (recommended for speed) or standard `pip`. The modern Python dependency management files (`pyproject.toml` & `uv.lock`) ensure your environment is reproducible.
+                </p>
+
+                <p class="text-[10px] font-bold uppercase tracking-widest mb-6">INSTALLATION STEPS:</p>
+                <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Clone the repository from GitHub</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Sync the environment using `uv sync`</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Run the GUI application with `uv run python gui.py`</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Or use the headless script: `uv run python cpstart.py`</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Use `--source "rtsp://..."` for IP Cameras</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Signup Section -->
+    <footer class="bg-black text-white pt-32 pb-6 overflow-hidden">
+        <div class="max-w-2xl mx-auto px-6 text-center mb-32">
+            <h3 class="text-3xl md:text-[2.5rem] font-medium tracking-tighter mb-6 leading-tight">Access the Source Code</h3>
+            <p class="text-[#a1a1a1] font-medium text-[19px] mb-10 mx-auto leading-[1.6]">Clone the repository and start building intelligent traffic management systems today.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto">
+                <a href="https://github.com/ajaykumarreddy-k/Smart-Parking-system" class="flex-1 text-center bg-brand-orange text-white px-10 py-4 font-semibold hover:bg-[#d64b2a] transition-colors text-[15px] rounded-none border-none">View on GitHub</a>
+            </form>
+        </div>
+
+        <div class="border-t-1 border-gray-800 pt-16 px-6 lg:px-8 max-w-[1920px] mx-auto">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-12">SYSTEM METRICS</p>
+            
+            <!-- Stats Row -->
+            <div class="flex flex-col md:flex-row gap-12 lg:gap-24 mb-24 lg:mb-32">
+                <div class="md:w-32 flex items-end pb-4">
+                    <p class="text-gray-400 uppercase text-[10px] font-bold tracking-widest leading-relaxed">Precision<br>Metrics</p>
+                </div>
+                <div>
+                    <p class="text-7xl md:text-[8.5rem] font-medium tracking-tighter leading-none mb-4 -ml-1">92%</p>
+                    <p class="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Core Car Detection</p>
+                </div>
+                <div>
+                    <p class="text-7xl md:text-[8.5rem] font-medium tracking-tighter leading-none mb-4 -ml-1">91%</p>
+                    <p class="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Context Verification</p>
+                </div>
+                <div>
+                    <p class="text-7xl md:text-[8.5rem] font-medium tracking-tighter leading-none mb-4 -ml-1">95%</p>
+                    <p class="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Space Mapping</p>
+                </div>
+            </div>
+
+            <!-- Typography & Links Grid -->
+            <div class="w-full relative">
+                <!-- Ai in Design full width -->
+                <h1 class="text-[18vw] sm:text-[19vw] leading-[0.8] tracking-tighter font-medium select-none text-white whitespace-nowrap mb-12 lg:mb-20" style="letter-spacing: -0.06em;">
+                    SmartPark<sup class="text-[4vw] top-[-1.5em] ml-2 font-medium text-gray-400">™</sup>
+                </h1>
+
+                <!-- Links and 2026 row -->
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end pb-12 lg:pb-16 w-full relative">
+                    
+                    <!-- Left aligned links -->
+                    <div class="grid grid-cols-2 gap-12 lg:gap-32 text-[15px] font-medium w-full lg:w-auto z-10 mb-8 lg:mb-0 lg:pb-4">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold mb-6 uppercase tracking-widest">Project</p>
+                            <ul class="space-y-4">
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">Features</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">Architecture</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">Setup Guide</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold mb-6 uppercase tracking-widest">Technologies</p>
+                            <ul class="grid grid-cols-2 gap-x-12 gap-y-4">
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">Python</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">OpenCV</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">YOLOv8</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">YOLO11</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">Tkinter</a></li>
+                                <li><a href="#" class="hover:text-gray-400 transition-colors">uv</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 2026 aligned to bottom right -->
+                    <div class="lg:absolute lg:bottom-0 lg:right-0 w-full lg:w-auto text-right">
+                        <h2 class="text-[25vw] lg:text-[19vw] leading-[0.75] tracking-tighter font-medium text-white -mb-2 lg:-mb-4 -mr-1 lg:-mr-3">
+                            2026
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom border/copyright -->
+            <div class="flex flex-col sm:flex-row justify-between items-center text-[12px] text-gray-500 border-t-1 border-gray-800 pt-6 pb-2 font-medium">
+                <p>Created with ❤️ for efficient and smart traffic management.</p>
+                <div class="flex items-center space-x-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-white transition-colors flex items-center">
+                        Built by <span class="text-white ml-2 tracking-widest font-bold">✦✦ ajaykumarreddy-k</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
