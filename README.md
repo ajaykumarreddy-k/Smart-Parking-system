@@ -1,7 +1,17 @@
 # 🚗 Smart Parking Space System
 
-A state-of-the-art Computer Vision desktop application that monitors and calculates parking lot occupancy in real-time. Built with a sophisticated ensemble of YOLO architectures, the system processes RTSP camera feeds, local videos, and images to deliver highly accurate parking slot tracking.
+![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-DNN-red?logo=opencv&logoColor=white)
+![Ultralytics](https://img.shields.io/badge/Ultralytics-YOLOv8%20%7C%20YOLO11-blueviolet)
+![Tkinter](https://img.shields.io/badge/GUI-Tkinter-yellow)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 
+A state-of-the-art Computer Vision (CV) desktop application for Intelligent Parking Management that monitors and calculates parking lot occupancy in real-time. Built with a sophisticated ensemble of YOLO architectures, this Smart Parking System processes RTSP camera feeds, local videos, and images to deliver highly accurate, automated parking slot tracking.
+
+<!-- 
+SEO Keywords for GitHub Search:
+Smart Parking, Intelligent Parking System, Computer Vision Parking, YOLOv8 Parking Detection, YOLO11 Vehicle Detection, CV Parking Occupancy, Real-Time Parking Lot Monitoring, Automated Parking Counter, RTSP Camera Parking, Python OpenCV Parking, Deep Learning Parking 
+-->
 ---
 
 ## 🌟 Key Features
