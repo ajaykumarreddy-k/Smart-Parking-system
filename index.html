@@ -88,16 +88,16 @@
 
     <!-- Navbar -->
     <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 px-6 lg:px-8 py-5 flex justify-between items-center text-[15px] font-medium tracking-tight border-b-1 border-black">
-        <a href="#" class="hover:opacity-60 transition-opacity">SmartPark CV</a>
+        <a href="#home" class="hover:opacity-60 transition-opacity">AKR - SmartPark CV</a>
         <div class="flex items-center space-x-6 lg:space-x-10">
-            <a href="#" class="hover:opacity-60 transition-opacity flex items-center">Features <span class="ml-1 text-lg leading-none font-light">+</span></a>
-            <a href="#" class="hover:opacity-60 transition-opacity hidden sm:block">Architecture</a>
-            <a href="#" class="hover:opacity-60 transition-opacity flex items-center">GitHub <span class="ml-1 text-lg leading-none font-light">+</span></a>
+            <a href="#features" class="hover:opacity-60 transition-opacity flex items-center">Features <span class="ml-1 text-lg leading-none font-light">+</span></a>
+            <a href="#architecture" class="hover:opacity-60 transition-opacity hidden sm:block">Architecture</a>
+            <a href="https://github.com/ajaykumarreddy-k/Smart-Parking-system" target="_blank" rel="noopener noreferrer" class="hover:opacity-60 transition-opacity flex items-center">GitHub <span class="ml-1 text-lg leading-none font-light">+</span></a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="pt-[73px]">
+    <header id="home" class="pt-[73px]">
         <!-- Top Abstract Banner -->
         <div class="px-6 lg:px-8 max-w-[1920px] mx-auto w-full pt-6">
             <div class="hero-banner border-1 border-black/10"></div>
@@ -160,7 +160,7 @@
         </h2>
 
         <div class="w-full aspect-[21/9] lg:aspect-[2.5/1] bg-[#e5e5e5] overflow-hidden">
-            <img src="/home/prince/.gemini/antigravity/brain/c277b448-9d31-4809-9f9a-27274c44d303/smart_parking_hero_1782252198186.png" alt="Parking lot aerial view" class="w-full h-full object-cover">
+            <img src="Doc%20images/parkinglotarialview.png" alt="Parking lot aerial view" class="w-full h-full object-cover">
         </div>
     </section>
 
@@ -195,8 +195,21 @@
         </div>
     </section>
 
+    <!-- Outputs Section -->
+    <section class="py-24 lg:py-32 px-6 lg:px-8 max-w-[1920px] mx-auto bg-white">
+        <p class="text-[10px] font-bold uppercase tracking-widest mb-10 text-brand-orange">OUTPUT SCREENS</p>
+        
+        <h2 class="text-4xl md:text-5xl lg:text-[4rem] leading-[1.05] font-medium tracking-tighter max-w-[80rem] mb-16 lg:mb-20">
+            Real-time interface and spatial mappings.
+        </h2>
+
+        <div class="w-full bg-[#f4f4f4] rounded-xl overflow-hidden border-1 border-black/10">
+            <img src="Outputs/image.png" alt="Smart Parking System Output Screens" class="w-full h-auto object-contain">
+        </div>
+    </section>
+
     <!-- Chapter 01: Features -->
-    <section class="bg-brand-orange text-black border-b-1 border-black">
+    <section id="features" class="bg-brand-orange text-black border-b-1 border-black">
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <!-- Left col -->
             <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
@@ -205,9 +218,8 @@
                     <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Features</h3>
                 </div>
                 <!-- Abstract block -->
-                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10">
-                    <div class="absolute inset-0 bg-gradient-to-br from-[#ffa1b5] via-[#ffb982] to-[#d6bcff]"></div>
-                    <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover mix-blend-overlay opacity-50">
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden bg-white/20 rounded-lg p-6 border-1 border-black/10">
+                    <img src="Doc%20images/Features.png" class="w-full h-full object-contain">
                 </div>
             </div>
             
@@ -221,9 +233,9 @@
                 <p class="text-[10px] font-bold uppercase tracking-widest mb-6">KEY FEATURES INCLUDE</p>
                 <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
                     <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Real-Time Occupancy Tracking</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Ensemble Vision Pipeline (v5, v8, v11)</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Geometric Math Mode layout inference</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">AI Counting Mode for minimum slots</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Interactive GUI Dashboard (Segmented Toggles)</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Geometric Math spatial inference mapping</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Instant Re-processing Event Listeners</li>
                     <li class="border-b-1 border-black py-5 cursor-pointer flex justify-between">Flexible Inputs (RTSP, MP4, Static)</li>
                 </ul>
             </div>
@@ -231,7 +243,7 @@
     </section>
 
     <!-- Chapter 02: Architecture -->
-    <section class="bg-brand-purple text-black border-b-1 border-black">
+    <section id="architecture" class="bg-brand-purple text-black border-b-1 border-black">
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <!-- Left col -->
             <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
@@ -240,8 +252,8 @@
                     <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Models</h3>
                 </div>
                 <!-- Abstract block -->
-                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10">
-                     <img src="/home/prince/.gemini/antigravity/brain/c277b448-9d31-4809-9f9a-27274c44d303/smart_parking_dashboard_1782252215461.png" class="w-full h-full object-cover contrast-125 saturate-150">
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden bg-white/20 rounded-lg p-6 border-1 border-black/10">
+                     <img src="Doc%20images/Models.png" class="w-full h-full object-contain">
                 </div>
             </div>
             
@@ -252,20 +264,20 @@
                     To ensure robust detection across different lighting conditions, camera angles, and object scales, we use a specialized combination of models working in harmony. This allows the system to not just find cars, but map out the parking lot structure.
                 </p>
 
-                <p class="text-[10px] font-bold uppercase tracking-widest mb-6">THE ENSEMBLE CONSISTS OF</p>
+                <p class="text-[10px] font-bold uppercase tracking-widest mb-6">THE ENSEMBLE PIPELINE</p>
                 <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
                     <li class="border-b-1 border-black py-5 cursor-pointer"><strong>best.onnx</strong>: Core Vehicle Detector for top-down angles</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>yolov8n.pt</strong>: Context Verification for varying shapes</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>yolo11n.pt</strong>: State-of-the-art robustness</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>parking_yolo.pt</strong>: Space Classifier for infrastructure mapping</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>NMS</strong>: Filtering out overlapping duplicates</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>parking_yolo.pt</strong>: Infrastructure mapping and space classification</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>IoU Suppression</strong>: Prevents double-counting hallucinated boxes</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>Area Filters</strong>: Discards tiny false-positive "space-empty" artifacts</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer"><strong>Math Engine</strong>: Rigid logical sum-alignment across UI states</li>
                 </ul>
             </div>
         </div>
     </section>
 
     <!-- Chapter 03: Getting Started -->
-    <section class="bg-brand-green text-black border-b-1 border-black">
+    <section id="setup" class="bg-brand-green text-black border-b-1 border-black">
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <!-- Left col -->
             <div class="p-8 sm:p-12 lg:p-20 flex flex-col justify-between border-b-1 lg:border-b-0 lg:border-r-1 border-black min-h-[60vh]">
@@ -274,9 +286,8 @@
                     <h3 class="text-5xl lg:text-[5rem] font-medium tracking-tighter">Setup</h3>
                 </div>
                 <!-- Abstract block -->
-                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden mix-blend-multiply opacity-90 border-1 border-black/10 bg-[#a1a1a1]">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover grayscale opacity-70">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#F45B38]/30 to-[#C4A8FF]/30 mix-blend-overlay"></div>
+                <div class="mt-16 aspect-video lg:aspect-[4/3] w-full relative overflow-hidden bg-white/20 rounded-lg p-6 border-1 border-black/10">
+                    <img src="Doc%20images/Setup.png" class="w-full h-full object-contain">
                 </div>
             </div>
             
@@ -290,9 +301,9 @@
                 <p class="text-[10px] font-bold uppercase tracking-widest mb-6">INSTALLATION STEPS:</p>
                 <ul class="chapter-list border-t-1 border-black text-[19px] font-medium w-full">
                     <li class="border-b-1 border-black py-5 cursor-pointer">Clone the repository from GitHub</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer">Sync the environment using `uv sync`</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer">Run the GUI application with `uv run python gui.py`</li>
-                    <li class="border-b-1 border-black py-5 cursor-pointer">Or use the headless script: `uv run python cpstart.py`</li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Install via <strong>`uv sync`</strong> OR <strong>`pip install .`</strong></li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Run GUI: <strong>`uv run python gui.py`</strong> OR <strong>`python gui.py`</strong></li>
+                    <li class="border-b-1 border-black py-5 cursor-pointer">Run Headless: <strong>`uv run python cpstart.py`</strong> OR <strong>`python cpstart.py`</strong></li>
                     <li class="border-b-1 border-black py-5 cursor-pointer">Use `--source "rtsp://..."` for IP Cameras</li>
                 </ul>
             </div>
@@ -347,9 +358,9 @@
                         <div>
                             <p class="text-gray-500 text-[10px] font-bold mb-6 uppercase tracking-widest">Project</p>
                             <ul class="space-y-4">
-                                <li><a href="#" class="hover:text-gray-400 transition-colors">Features</a></li>
-                                <li><a href="#" class="hover:text-gray-400 transition-colors">Architecture</a></li>
-                                <li><a href="#" class="hover:text-gray-400 transition-colors">Setup Guide</a></li>
+                                <li><a href="#features" class="hover:text-gray-400 transition-colors">Features</a></li>
+                                <li><a href="#architecture" class="hover:text-gray-400 transition-colors">Architecture</a></li>
+                                <li><a href="#setup" class="hover:text-gray-400 transition-colors">Setup Guide</a></li>
                             </ul>
                         </div>
                         <div>

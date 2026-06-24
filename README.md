@@ -8,6 +8,9 @@
 
 A state-of-the-art Computer Vision (CV) desktop application for Intelligent Parking Management that monitors and calculates parking lot occupancy in real-time. Built with a sophisticated ensemble of YOLO architectures, this Smart Parking System processes RTSP camera feeds, local videos, and images to deliver highly accurate, automated parking slot tracking.
 
+<div align="center">
+  <img src="Doc%20images/parkinglotarialview.png" alt="Smart Parking System Banner" width="800"/>
+</div>
 <!-- 
 SEO Keywords for GitHub Search:
 Smart Parking, Intelligent Parking System, Computer Vision Parking, YOLOv8 Parking Detection, YOLO11 Vehicle Detection, CV Parking Occupancy, Real-Time Parking Lot Monitoring, Automated Parking Counter, RTSP Camera Parking, Python OpenCV Parking, Deep Learning Parking 
@@ -15,6 +18,11 @@ Smart Parking, Intelligent Parking System, Computer Vision Parking, YOLOv8 Parki
 ---
 
 ## 🌟 Key Features
+
+<div align="center">
+  <img src="Doc%20images/Features.png" alt="Features Dashboard" width="800"/>
+</div>
+
 - **Real-Time Occupancy Tracking**: Calculates Total, Occupied, and Vacant spots on the fly.
 - **Ensemble Vision Pipeline**: Fuses multiple YOLO versions (v5, v8, v11) for high-precision bounding boxes.
 - **Dynamic Slot Counting**:
@@ -27,6 +35,10 @@ Smart Parking, Intelligent Parking System, Computer Vision Parking, YOLOv8 Parki
 ---
 
 ## 🧠 Architecture & Neural Network Layers
+
+<div align="center">
+  <img src="Doc%20images/Models.png" alt="Models and Architecture" width="800"/>
+</div>
 
 The application relies on a multi-model ensemble approach to guarantee accuracy across varying top-down drone and security camera perspectives.
 
@@ -70,6 +82,10 @@ To ensure robust detection across different lighting conditions, camera angles, 
 ---
 
 ## 🚀 Getting Started
+
+<div align="center">
+  <img src="Doc%20images/Setup.png" alt="Setup and Installation" width="800"/>
+</div>
 
 You can set up the project using either `uv` (recommended for speed) or standard `pip`.
 
@@ -119,6 +135,14 @@ python cpstart.py --source 0
 # Use --source "path/to/video.mp4" for local files
 # Use --source "rtsp://..." for IP Cameras
 ```
+
+---
+
+## 📸 Output Screens
+
+<div align="center">
+  <img src="Outputs/image.png" alt="Output Screens" width="1000"/>
+</div>
 
 ---
 
