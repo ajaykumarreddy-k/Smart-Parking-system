@@ -37,6 +37,11 @@ Smart Parking, Intelligent Parking System, Computer Vision Parking, YOLOv8 Parki
 ## 🧠 Architecture & Neural Network Layers
 
 <div align="center">
+  <img src="Architecture/main.png" alt="System Architecture Flowchart" width="1000"/>
+</div>
+<br>
+
+<div align="center">
   <img src="Doc%20images/Models.png" alt="Models and Architecture" width="800"/>
 </div>
 
