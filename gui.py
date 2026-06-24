@@ -73,11 +73,12 @@ class ParkingApp:
         # --- Sidebar (Left Panel) ---
         self.sidebar = ctk.CTkFrame(self.root, width=320, corner_radius=0, fg_color="#151821", border_width=0)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
-        self.sidebar.grid_rowconfigure(4, weight=1) # Push stats to bottom
+        self.sidebar.grid_propagate(False)
+        self.sidebar.pack_propagate(False)
         
         # 1. Branding Header
         self.header_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        self.header_frame.grid(row=0, column=0, padx=25, pady=(30, 20), sticky="ew")
+        self.header_frame.pack(fill="x", padx=25, pady=(20, 10))
         
         self.logo_label = ctk.CTkLabel(self.header_frame, text="SmartPark", font=ctk.CTkFont(family="Helvetica", size=26, weight="bold"), text_color="#FFFFFF")
         self.logo_label.pack(anchor="w")
@@ -87,30 +88,34 @@ class ParkingApp:
 
         # Separator
         separator1 = ctk.CTkFrame(self.sidebar, height=1, fg_color="#2A2D3E")
-        separator1.grid(row=1, column=0, sticky="ew", padx=25, pady=(0, 20))
+        separator1.pack(fill="x", padx=25, pady=(0, 10))
 
         # 2. Media Controls Group (Cards)
         self.media_group = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        self.media_group.grid(row=2, column=0, padx=25, pady=(0, 20), sticky="ew")
+        self.media_group.pack(fill="x", padx=25, pady=(0, 10))
         
-        ctk.CTkLabel(self.media_group, text="DATA SOURCE", font=ctk.CTkFont(size=11, weight="bold"), text_color="#64748B").pack(anchor="w", pady=(0, 10))
+        ctk.CTkLabel(self.media_group, text="DATA SOURCE", font=ctk.CTkFont(size=11, weight="bold"), text_color="#64748B").pack(anchor="w", pady=(0, 5))
         
         self.btn_load_vid = ctk.CTkButton(self.media_group, text="▶ Live Video Stream", font=ctk.CTkFont(weight="bold"), height=40, command=self.load_video, fg_color="#2563EB", hover_color="#1D4ED8")
-        self.btn_load_vid.pack(fill="x", pady=(0, 8))
+        self.btn_load_vid.pack(fill="x", pady=(0, 5))
 
         self.btn_load_img = ctk.CTkButton(self.media_group, text="📷 Analyze Static Image", font=ctk.CTkFont(weight="bold"), height=40, command=self.load_image, fg_color="#334155", hover_color="#475569")
-        self.btn_load_img.pack(fill="x", pady=(0, 8))
+        self.btn_load_img.pack(fill="x", pady=(0, 5))
 
         self.btn_stop_vid = ctk.CTkButton(self.media_group, text="⏹ Stop Processing", font=ctk.CTkFont(weight="bold"), height=40, command=self.stop_video, state="disabled", fg_color="transparent", border_width=1, border_color="#334155", text_color="#94A3B8")
         self.btn_stop_vid.pack(fill="x")
         
         # Separator
         separator2 = ctk.CTkFrame(self.sidebar, height=1, fg_color="#2A2D3E")
-        separator2.grid(row=3, column=0, sticky="ew", padx=25, pady=20)
+        separator2.pack(fill="x", padx=25, pady=10)
+
+        # 4. Live Analytics Dashboard (Bottom of sidebar)
+        self.analytics_group = ctk.CTkFrame(self.sidebar, fg_color="#1E293B", corner_radius=12)
+        self.analytics_group.pack(side="bottom", fill="x", padx=20, pady=15)
 
         # 3. Configuration Group
-        self.config_group = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        self.config_group.grid(row=4, column=0, padx=25, sticky="nsew")
+        self.config_group = ctk.CTkScrollableFrame(self.sidebar, fg_color="transparent")
+        self.config_group.pack(fill="both", expand=True, padx=10, pady=10)
         
         ctk.CTkLabel(self.config_group, text="CONFIGURATION", font=ctk.CTkFont(size=11, weight="bold"), text_color="#64748B").pack(anchor="w", pady=(0, 15))
         
@@ -120,33 +125,30 @@ class ParkingApp:
         self.conf_label = ctk.CTkLabel(self.conf_frame, text="Confidence Threshold", font=ctk.CTkFont(size=12))
         self.conf_label.pack(anchor="w")
         self.conf_var = tk.DoubleVar(value=0.20)
-        self.conf_slider = ctk.CTkSlider(self.conf_frame, from_=0.01, to=1.0, variable=self.conf_var, button_color="#3B82F6", progress_color="#3B82F6")
+        self.conf_slider = ctk.CTkSlider(self.conf_frame, from_=0.01, to=1.0, variable=self.conf_var, button_color="#3B82F6", progress_color="#3B82F6", command=self.on_config_change)
         self.conf_slider.pack(fill="x", pady=(5, 0))
 
         # Mode Menu
         self.mode_label = ctk.CTkLabel(self.config_group, text="Detection Mode", font=ctk.CTkFont(size=12))
         self.mode_label.pack(anchor="w")
-        self.mode_var = ctk.StringVar(value="AI Counting")
-        self.mode_menu = ctk.CTkOptionMenu(self.config_group, variable=self.mode_var, values=["Manual", "Geometric Math", "AI Counting"], fg_color="#1E293B", button_color="#334155")
-        self.mode_menu.pack(fill="x", pady=(5, 15))
+        self.mode_menu = ctk.CTkSegmentedButton(self.config_group, values=["Manual", "Geo Math", "AI Count", "Vacant"], selected_color="#3B82F6", command=self.on_config_change)
+        self.mode_menu.set("AI Count")
+        self.mode_menu.pack(fill="x", pady=(5, 10))
         
         # Spot Entry
         self.spots_label = ctk.CTkLabel(self.config_group, text="Manual Spot Capacity", font=ctk.CTkFont(size=12))
         self.spots_label.pack(anchor="w")
-        self.total_spots_var = tk.StringVar(value="15")
-        self.total_spots_entry = ctk.CTkEntry(self.config_group, textvariable=self.total_spots_var, fg_color="#1E293B", border_color="#334155")
+        self.total_spots_entry = ctk.CTkEntry(self.config_group, fg_color="#1E293B", border_color="#334155", text_color="white")
+        self.total_spots_entry.insert(0, "15")
+        self.total_spots_entry.bind("<KeyRelease>", self.on_config_change)
         self.total_spots_entry.pack(fill="x", pady=(5, 15))
 
         # Imgsz Menu
         self.imgsz_label = ctk.CTkLabel(self.config_group, text="Inference Resolution", font=ctk.CTkFont(size=12))
         self.imgsz_label.pack(anchor="w")
-        self.imgsz_var = ctk.StringVar(value="1920")
-        self.imgsz_menu = ctk.CTkOptionMenu(self.config_group, variable=self.imgsz_var, values=["640", "1024", "1280", "1920", "2560", "3200"], fg_color="#1E293B", button_color="#334155")
+        self.imgsz_menu = ctk.CTkOptionMenu(self.config_group, values=["640", "1024", "1280", "1920", "2560", "3200"], fg_color="#1E293B", button_color="#334155", text_color="white", dropdown_fg_color="#1E293B", command=self.on_config_change)
+        self.imgsz_menu.set("1920")
         self.imgsz_menu.pack(fill="x", pady=(5, 0))
-
-        # 4. Live Analytics Dashboard (Bottom of sidebar)
-        self.analytics_group = ctk.CTkFrame(self.sidebar, fg_color="#1E293B", corner_radius=12)
-        self.analytics_group.grid(row=5, column=0, padx=20, pady=25, sticky="ew")
         
         # Occupied Card (Red)
         self.occ_card = ctk.CTkFrame(self.analytics_group, fg_color="transparent")
@@ -198,6 +200,14 @@ class ParkingApp:
         # Store current photo to prevent garbage collection and current raw frame to redraw on resize
         self.current_photo = None
         self.current_frame = None
+        self.raw_frame = None
+
+    def on_config_change(self, *args):
+        if not self.is_video_playing and getattr(self, 'raw_frame', None) is not None:
+            processed_frame, cars, empty = self.process_frame(self.raw_frame.copy())
+            self.update_stats(cars, empty)
+            self.current_frame = processed_frame
+            self.display_image(processed_frame)
 
     def on_canvas_resize(self, event):
         if self.current_frame is not None:
@@ -220,6 +230,7 @@ class ParkingApp:
         if file_path:
             frame = cv2.imread(file_path)
             if frame is not None:
+                self.raw_frame = frame.copy()
                 processed_frame, cars, empty = self.process_frame(frame)
                 self.update_stats(cars, empty)
                 self.current_frame = processed_frame
@@ -256,6 +267,7 @@ class ParkingApp:
         if self.is_video_playing and self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
+                self.raw_frame = frame.copy()
                 processed_frame, cars, empty = self.process_frame(frame)
                 self.update_stats(cars, empty)
                 self.current_frame = processed_frame
@@ -268,7 +280,7 @@ class ParkingApp:
 
     def process_frame(self, frame):
         try:
-            total_slots = int(self.total_spots_var.get())
+            total_slots = int(self.total_spots_entry.get())
         except ValueError:
             total_slots = 15
 
@@ -278,7 +290,7 @@ class ParkingApp:
             conf_thresh = 0.25
             
         try:
-            imgsz = int(self.imgsz_var.get())
+            imgsz = int(self.imgsz_menu.get())
         except:
             imgsz = 640
 
@@ -384,9 +396,16 @@ class ParkingApp:
                 cv2.rectangle(img, (left, top - 22), (left + text_size[0] + 10, top), (36, 36, 239), -1)
                 cv2.putText(img, label, (left + 5, top - 6), cv2.FONT_HERSHEY_DUPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
+        median_car_w, median_car_h = 0, 0
+        if len(final_cars) > 0:
+            median_car_w = np.median([c[2] for c in final_cars])
+            median_car_h = np.median([c[3] for c in final_cars])
+
         # 2. Custom Model Inference (Empty and Occupied Spaces)
         custom_spaces_count = 0
         vacant_spaces_count = 0
+        occupied_spaces_count = 0
+        valid_vacant_boxes = []
         if self.model_custom is not None:
             results_custom = self.model_custom(frame, verbose=False, conf=conf_thresh, imgsz=imgsz)
             for box in results_custom[0].boxes:
@@ -394,10 +413,42 @@ class ParkingApp:
                 conf = float(box.conf[0])
                 cls_name = results_custom[0].names[int(box.cls[0])]
                 
+                # Filter out overlap with detected cars to prevent double counting
+                is_overlapping = False
+                for car in final_cars:
+                    cx1, cy1, cw, ch = car[0], car[1], car[2], car[3]
+                    cx2, cy2 = cx1 + cw, cy1 + ch
+                    
+                    inter_x1 = max(x1, cx1)
+                    inter_y1 = max(y1, cy1)
+                    inter_x2 = min(x2, cx2)
+                    inter_y2 = min(y2, cy2)
+                    
+                    if inter_x2 > inter_x1 and inter_y2 > inter_y1:
+                        inter_area = (inter_x2 - inter_x1) * (inter_y2 - inter_y1)
+                        box_area = (x2 - x1) * (y2 - y1)
+                        
+                        # If more than 30% of this space is covered by a car, it's already counted by YOLO!
+                        if inter_area / box_area > 0.3:
+                            is_overlapping = True
+                            break
+                            
+                if is_overlapping:
+                    continue
+                
                 if "space" in cls_name.lower():
                     custom_spaces_count += 1
                 if "empty" in cls_name.lower():
+                    # Filter out tiny hallucinated empty spaces (like painted numbers/drains)
+                    empty_area = (x2 - x1) * (y2 - y1)
+                    if median_car_w > 0 and median_car_h > 0:
+                        if empty_area < (median_car_w * median_car_h) * 0.2:
+                            continue
+                            
                     vacant_spaces_count += 1
+                    valid_vacant_boxes.append([x1, y1, x2 - x1, y2 - y1, conf])
+                elif "occupied" in cls_name.lower():
+                    occupied_spaces_count += 1
                 
                 # Premium Bounding Box UI - Subtle Green Overlay with sharp borders
                 overlay = img.copy()
@@ -411,10 +462,14 @@ class ParkingApp:
                 cv2.rectangle(img, (x1, y1 - 22), (x1 + text_size[0] + 10, y1), (129, 185, 16), -1)
                 cv2.putText(img, label, (x1 + 5, y1 - 6), cv2.FONT_HERSHEY_DUPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
+        total_occupied = cars_count + occupied_spaces_count
+
         # 3. Auto-Detect Total Spots Logic
-        mode = self.mode_var.get()
+        mode = self.mode_menu.get()
         
-        if mode == "Geometric Math" and len(final_cars) > 0:
+        all_boxes = final_cars + valid_vacant_boxes
+        
+        if mode == "Geo Math" and len(final_cars) > 0:
             widths = [box[2] for box in final_cars]
             heights = [box[3] for box in final_cars]
             median_w = np.median(widths)
@@ -424,56 +479,73 @@ class ParkingApp:
                 is_vertical_parking = median_h > median_w
                 lanes = []
                 
-                for box in final_cars:
-                    x, y, w, h = box
+                if is_vertical_parking:
+                    all_boxes.sort(key=lambda b: b[1] + b[3]/2)
+                else:
+                    all_boxes.sort(key=lambda b: b[0] + b[2]/2)
+                
+                for box in all_boxes:
+                    x, y, w, h = box[0], box[1], box[2], box[3]
                     cx = x + w / 2
                     cy = y + h / 2
                     
                     placed = False
                     for lane in lanes:
                         if is_vertical_parking:
-                            if abs(lane['avg_center'] - cy) < median_h * 0.75:
-                                lane['cars'].append(box)
-                                lane['avg_center'] = sum(b[1] + b[3]/2 for b in lane['cars']) / len(lane['cars'])
+                            if abs(lane['avg_center'] - cy) < median_h * 0.5:
+                                lane['boxes'].append(box)
+                                lane['avg_center'] = sum(b[1] + b[3]/2 for b in lane['boxes']) / len(lane['boxes'])
                                 placed = True
                                 break
                         else:
-                            if abs(lane['avg_center'] - cx) < median_w * 0.75:
-                                lane['cars'].append(box)
-                                lane['avg_center'] = sum(b[0] + b[2]/2 for b in lane['cars']) / len(lane['cars'])
+                            if abs(lane['avg_center'] - cx) < median_w * 0.5:
+                                lane['boxes'].append(box)
+                                lane['avg_center'] = sum(b[0] + b[2]/2 for b in lane['boxes']) / len(lane['boxes'])
                                 placed = True
                                 break
                     if not placed:
-                        lanes.append({'cars': [box], 'avg_center': cy if is_vertical_parking else cx})
+                        lanes.append({'boxes': [box], 'avg_center': cy if is_vertical_parking else cx})
                 
                 num_lanes = len(lanes)
                 if is_vertical_parking:
-                    slots_per_lane = frame_w / median_w
+                    slots_per_lane = frame_w / median_w if median_w > 0 else 0
                 else:
-                    slots_per_lane = frame_h / median_h
+                    slots_per_lane = frame_h / median_h if median_h > 0 else 0
                     
                 calc_total = int(num_lanes * slots_per_lane)
                 self.max_auto_spots = max(self.max_auto_spots, calc_total)
                 total_slots = self.max_auto_spots
-                self.total_spots_var.set(str(total_slots))
+                self.total_spots_entry.delete(0, 'end')
+                self.total_spots_entry.insert(0, str(total_slots))
                 
-        elif mode == "AI Counting":
-            # Minimum possible spots = detected cars + detected empty spaces
-            min_spots = cars_count + vacant_spaces_count
+        elif mode == "AI Count":
+            # Minimum possible spots = total occupied + detected empty spaces
+            min_spots = total_occupied + vacant_spaces_count
             self.max_auto_spots = max(self.max_auto_spots, min_spots, custom_spaces_count)
             total_slots = self.max_auto_spots
-            self.total_spots_var.set(str(total_slots))
+            self.total_spots_entry.delete(0, 'end')
+            self.total_spots_entry.insert(0, str(total_slots))
+        elif mode == "Vacant":
+            total_slots = total_occupied + vacant_spaces_count
+            self.total_spots_entry.delete(0, 'end')
+            self.total_spots_entry.insert(0, str(total_slots))
 
-        empty_slots = total_slots - cars_count
-        return img, cars_count, empty_slots
+        if mode == "Vacant":
+            empty_slots = vacant_spaces_count
+            occupied_slots = total_slots - empty_slots
+        else:
+            occupied_slots = total_occupied
+            empty_slots = total_slots - occupied_slots
+            
+        return img, occupied_slots, empty_slots
 
     def update_stats(self, cars, empty):
         try:
-            total = int(self.total_spots_var.get())
+            total = int(self.total_spots_entry.get())
         except ValueError:
             total = 0
             
-        self.lbl_total.configure(text=f"Total Capacity: {total}")
+        self.lbl_total.configure(text=f"Total Capacity: {cars + empty}")
         self.lbl_occupied.configure(text=f"{cars}")
         self.lbl_vacant.configure(text=f"{empty}")
 
