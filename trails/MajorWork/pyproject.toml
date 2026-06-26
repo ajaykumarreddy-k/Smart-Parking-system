@@ -1,0 +1,15 @@
+[project]
+name = "car-parking-system"
+version = "0.1.0"
+description = "CV Smart Parking space system"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "opencv-python",
+    "numpy",
+    "pillow",
+    "ultralytics",
+]
+
+[tool.uv]
+package = false

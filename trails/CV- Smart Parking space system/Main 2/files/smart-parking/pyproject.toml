@@ -1,0 +1,17 @@
+[project]
+name = "smart-parking"
+version = "0.1.0"
+description = "YOLO-based smart parking occupancy detector with Streamlit UI"
+requires-python = ">=3.10"
+dependencies = [
+    "ultralytics>=8.3.0",
+    "streamlit>=1.38",
+    "opencv-python-headless>=4.10",
+    "numpy>=1.26",
+    "pillow>=10.4",
+    "streamlit-drawable-canvas-fix>=0.9.8",
+    "shapely>=2.0",
+]
+
+[tool.uv]
+package = false
